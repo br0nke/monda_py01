@@ -9,87 +9,120 @@ Reikalavimai
 * Galimybė pridėti pajamas arba išlaidas
 * Spausdinti pajamų/išlaidų žurnalą
 * Suskaičiuoti biudžeto balansą
-
 """
-# Initialize dictionaries to store income and expenses for different categories
-income_categories = {}
-expenses_categories = {}
 
-# Function to add income to a specific category
-def add_income(category, amount):
-    income_categories[category] = income_categories.get(category, 0) + amount
+"""def add_cash(budget_list: list, input_str: str) -> list:
+    try:
+        name, amount_str = input_str.split(':')
+        amount = float(amount_str)
+        budget_list.append((name.strip(), amount))
+        print(f"${amount} added to the budget from '{name.strip()}'.")
+    except ValueError:
+        print("Invalid input. Please enter a valid transaction in the format 'Name: Amount'.")
+    return budget_list
 
-# Function to add expense to a specific category
-def add_expense(category, amount):
-    expenses_categories[category] = expenses_categories.get(category, 0) + amount
+def cash_out(budget_list: list, input_str: str) -> list:
+    try:
+        name, amount_str = input_str.split(':')
+        amount = float(amount_str)
+        
+        # Extract only the amounts from the budget_list for sum calculation
+        current_balance = sum(transaction[1] for transaction in budget_list)
+        
+        if current_balance >= amount:
+            budget_list.append((name.strip(), -amount))
+            print(f"${amount} spent from the budget for '{name.strip()}'.")
+        else:
+            print("Insufficient funds.")
+    except ValueError:
+        print("Invalid input. Please enter a valid transaction in the format 'Name: Amount'.")
+    return budget_list
 
-# Function to calculate balance for a specific category
-def calculate_balance(category):
-    income = income_categories.get(category, 0)
-    expenses = expenses_categories.get(category, 0)
-    balance = income - expenses
-    print(f"\nCurrent Balance for '{category}': Eur{balance}")
+def transactions(budget_list: list) -> None:
+    print(">>> Transaction History <<<")
+    for transaction in budget_list:
+        name, amount = transaction
+        if amount > 0:
+            print(f"Added: Eur {amount} from '{name}'")
+        else:
+            print(f"Spent: Eur {-amount} for '{name}'")
 
-# Function to print statement summary for all categories
-def statement_summary():
-    print("\nStatement Summary:")
-    for category in set(income_categories.keys()).union(expenses_categories.keys()):
-        income = income_categories.get(category, 0)
-        expenses = expenses_categories.get(category, 0)
-        balance = income - expenses
-        print(f"\nCategory: '{category}'")
-        print(f"Income: Eur{income}")
-        print(f"Expenses: Eur{expenses}")
-        print(f"Balance: Eur{balance}")
+def cash_flow_balance(budget_list: list) -> None:
+    balance = sum(transaction[1] for transaction in budget_list)
+    print(f"Current Cash Flow Balance: ${balance}")
 
-# Main loop
-def main(budgeter: list):
-    while True:
-        print("\nBudget Holes:")
-        print("0. Exit")
-        print("1. Add Income")
-        print("2. Add Expense")
-        print("3. Calculate Balance")
-        print("4. Statement Summary")
-
-        choice = input("Enter your choice (0-4): ")
-
-        if choice == '0':
-            print("Exiting the budget calculator. Goodbye!")
-            break
-        elif choice == '1':
-            category = input("Enter the income category: ")
-            amount = float(input("Enter the income amount: "))
-            add_income(category, amount)
-        elif choice == '2':
-            category = input("Enter the expense category: ")
-            amount = float(input("Enter the expense amount: "))
-            add_expense(category, amount)
-        elif choice == '3':
-            category = input("Enter the category to calculate balance: ")
-            calculate_balance(category)
-        elif choice == '4':
-            statement_summary()
-    
-
-
-
-"""def main(budget_list: list) -> None:
+def main(budget_list: list) -> None:
     while True:
         print(">>> Budget Holes System <<<")
         print("0: Exit")
         print("1: Add Cash")
         print("2: Cashout")
-        print("3: Trasactions")
+        print("3: Transactions")
         print("4: Cash Flow Balance")
         
         choice = input("Choice: ")
         if choice == "0":
             break
         elif choice == "1":
-            budget_list = add_cash(budget_list, input('Amount of money to add: '))
+            input_str = input('Enter transaction (e.g., Salary: 2000): ')
+            budget_list = add_cash(budget_list, input_str)
         elif choice == "2":
-            budget_list = cash_out(budget_list, input('Amount of money spent: '))
-
+            input_str = input('Enter transaction (e.g., Grocery: 50): ')
+            budget_list = cash_out(budget_list, input_str)
+        elif choice == "3":
+            transactions(budget_list)
+        elif choice == "4":
+            cash_flow_balance(budget_list)
 
 main([])"""
+
+# BUDGET MASCHINE#2
+
+def income(money_in, amount, budget_main):
+    budget_main[money_in] = +abs(float(amount))
+    print(f'Eur {amount} amount was added.')
+    return budget_main
+
+def expense(money_out, amount, budget_main):
+    budget_main[money_out] = -abs(float(amount))
+    print(f'Eur {amount} amount was deducted.')
+    return budget_main
+
+def statment(budget_main):
+    for key, value in budget_main.items():
+        print(f'{key}  {value}')
+    return budget_main
+
+def balance(budget_main):
+    whole_budget = sum(budget_main.values())
+    print(f'{whole_budget:.2f}')
+    return budget_main
+
+budget_main = {}
+
+while True:
+    print(">>>> Budget Holes Checker <<<<")
+    print("0: Exit")
+    print("1: Add Income")
+    print("2: Add Expense")
+    print("3: Print Transactions List")
+    print("4: Current Balance")
+    choice = input("Choose your task: ")
+    if choice == "0":
+        print('Bye bye :)')
+        break
+    elif choice == "1":
+        money_in = input("Enter transaction name: ")
+        amount = input('Enter the amount to add: ')
+        budget_main = income(money_in, amount, budget_main)
+    elif choice == "2":
+        money_out = input("Enter deduction transaction name: ")
+        amount = input("Enter deduction amount: ")
+        budget_main = expense(money_out, amount, budget_main)
+    elif choice == "3":
+        statment(budget_main)
+    elif choice == "4":
+        balance(budget_main)
+    else:
+        print("Bad input check your numbers!")
+        pass
