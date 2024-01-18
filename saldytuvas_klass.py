@@ -1,3 +1,19 @@
+import json
+import os
+
+contents = {}
+
+# Check if the JSON file exists
+if os.path.isfile('refrigerator.json'):
+    with open('refrigerator.json', 'r') as file:
+        # Load the contents into the refrigerator
+        contents = json.load(file)
+
+# Save the contents to a JSON file
+with open('refrigerator.json', 'w') as file:
+    json.dump(contents, file)
+
+
 class Product:
     def __init__(self, name:str, quantity:float, unit_of_measurement= "Unit", **kwargs) -> None:
         self.name = name
@@ -28,7 +44,20 @@ class Recipe:
 
 
 class Fridge:
-    contents = []
+    import json
+    import os
+
+contents = []
+
+# Check if the JSON file exists
+if os.path.isfile('refrigerator.json'):
+    with open('refrigerator.json', 'r') as file:
+        # Load the contents into the refrigerator
+        contents = json.load(file)
+
+# Save the contents to a JSON file
+with open('refrigerator.json', 'w') as file:
+    json.dump(contents, file)
 
     def check_product(self, product_name:str) -> (int, Product):
         for product_id, product in enumerate(self.contents):

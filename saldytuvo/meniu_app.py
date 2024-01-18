@@ -15,6 +15,7 @@ def main():
         choice = input("Pasirinkite: ")
 
         if choice == "0":
+            fridge.save()
             break
         elif choice == "1":
             product_name = input("Kokį produktą norite pridėti?: ")
@@ -23,7 +24,7 @@ def main():
             product_unit = input("Kiek cia to daikto? l ar kg ar vnt ar g ar ml: ")
             if product_unit not in valid_units:
                 print("Blogai ivestas matavimo vienetas!")
-                return
+                pass
             fridge.add_product(product_name, product_quantity, product_unit)
             print(f'Sekmingai ideta {product_name} {product_quantity} {product_unit}.')
         elif choice == "3":

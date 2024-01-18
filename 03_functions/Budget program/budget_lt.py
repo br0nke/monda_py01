@@ -77,6 +77,19 @@ def main(budget_list: list) -> None:
 main([])"""
 
 # BUDGET MASCHINE#2
+import pickle
+import os
+
+BUDGET_FILE = 'Budget program/budget_file.pkl'
+
+if os.path.exists(BUDGET_FILE):
+    with open(BUDGET_FILE, "rb") as budget_file:
+        transfers = pickle.load(budget_file)
+        transfers.append(transfer)
+else:
+    transfers = [transfer]
+with open(BUDGET_FILE, "wb") as budget_file:
+    
 
 def income(money_in, amount, budget_main):
     budget_main[money_in] = +abs(float(amount))
